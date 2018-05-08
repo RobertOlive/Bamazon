@@ -24,13 +24,38 @@ function readTable () {
         console.log(res);
         inquirer.prompt([
             {
-                type: "input",
                 name: "products",
-                message: "Please enter the ID of the product you would like to buy"
+                type: "input",
+                message: "Please enter the ID of the product you would like to buy",
+                validate: function(value) {
+                    if (isNaN(value) === false) {
+                      return true;
+                    }
+                    return false;
+                  }
             }
-        ]).then(
-            console.log(answer)
-        )
+        ]).then(function(answer) {
+            console.log("You've selected " + res[answer.products].product_name + 
+                        ". The price is " + res[answer.products].price + " dollars.")
+            sellItem(res[answer.products].product_name)
+        })
     })
 }
 
+function sellItem (item) {
+    inquirer.prompt([
+        {
+        name: "quantity",
+        type: "input",
+        message: "How many would you like to buy?",
+        validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
+        }
+    ]).then(function(answers) {
+        console.log("You have purchased " + answers.quantity + " " + item + ".")
+    })
+}
