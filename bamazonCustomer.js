@@ -1,5 +1,6 @@
 const inquirer = require("inquirer"),
-        mysql = require("mysql");
+        mysql = require("mysql"),
+        cTable = require('console.table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -20,7 +21,7 @@ connection.connect(function(err) {
 function readTable () {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
-        console.log(res)
+        console.table(res)
         inquirer.prompt([
             {
                 name: "products",
@@ -68,5 +69,7 @@ function sellItem (item) {
         else {
             console.log("There are not enough of those to buy.")
         }
+        readTable()
+        connection.end()
     })
 }
