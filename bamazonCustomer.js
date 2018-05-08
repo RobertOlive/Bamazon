@@ -58,8 +58,9 @@ function sellItem (item) {
         }
     ]).then(function(answers) {
         if (answers.quantity <= item.stock_quantity) {
-            var newQuant = item.stock_quantity - answers.quantity
-            console.log("You have purchased " + answers.quantity + " " + item.product_name + ".")
+            var newQuant = item.stock_quantity - answers.quantity,
+                cost = item.price * answers.quantity
+            console.log("You have purchased " + answers.quantity + " " + item.product_name + " for $" + cost + ".")
             connection.query("UPDATE products SET stock_quantity = " + newQuant + " WHERE item_id = " + item.item_id,
                 function (err, result) {
                     if (err) console.log(err);
@@ -70,6 +71,6 @@ function sellItem (item) {
             console.log("There are not enough of those to buy.")
         }
         readTable()
-        connection.end()
+        // connection.end()
     })
 }
